@@ -21,7 +21,8 @@ To get started with the On-Call Assistant, follow these steps:
 ### Installation
 1. Clone the repository
 2. Run the following
-```pip install -r requirements.txt
+```
+pip install -r requirements.txt
 ```
 
 ### Configuration
