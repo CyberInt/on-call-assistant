@@ -20,6 +20,9 @@ To get started with the On-Call Assistant, follow these steps:
 
 ### Installation
 1. Clone the repository
+2. Run the following
+```pip install -r requirements.txt
+```
 
 ### Configuration
 Configure the OpenAI Assistant API key in your environment variables or project settings, and set up the necessary integrations with ElasticSearch, Grafana, Prometheus, and any SaaS platforms you plan to monitor. Adjust the bot's listening and response behaviors according to your needs.
