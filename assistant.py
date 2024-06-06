@@ -278,51 +278,37 @@ def handle_message_events(body, logger):
     run = wait_on_run(run, thread)
     print (run.status)
 
-    if (run.required_action is not None):
+    while run.required_action is not None:
       # Extract single tool call
-      tool_call = run.required_action.submit_tool_outputs.tool_calls[0]
-      name = tool_call.function.name
-      arguments = json.loads(tool_call.function.arguments)
+      #tool_call = run.required_action.submit_tool_outputs.tool_calls[0]
+      tool_calls = run.required_action.submit_tool_outputs.tool_calls
 
-      print("Function Name:", name)
+      print("Calling tools: ", len(tool_calls), tool_calls)
+      # Extract single tool call
+      tool_outputs = []
+      for tool_call in run.required_action.submit_tool_outputs.tool_calls:
+            name = tool_call.function.name
+            arguments = json.loads(tool_call.function.arguments)
 
-      if (name == "fetch_messages_from_past_day"):
-        print("Function Arguments: " + str(arguments["hours"]))
-        responses = fetch_messages_from_past_day(arguments["hours"])
-        #print("Responses:", responses)
-      
-      elif (name == "check_webpage_accessibility"):
-          responses = check_webpage_accessibility()
+            print("Function Name:", name)
+            print("Function Arguments:", arguments)
 
-      elif (name == "container_logs"):
-          print("Function Arguments: " + str(arguments["container"] + " " + str(arguments["log_count"])))
-          responses = container_logs(arguments["container"], arguments["log_count"])
-          responses = list(responses)         
-
-      elif (name == "grafana_kafka_lag_query"):
-          print("Function Arguments: " + str(arguments["consumer_group"]))
-          responses = grafana_kafka_lag_query(arguments["consumer_group"])
-
-      
-      # print the responses
-      print("The response is: ",json.dumps(responses))
+            if handler := FUNCTION_NAME_TO_FUNCTION.get(name):
+                response = handler(**arguments)
+                tool_outputs.append({"tool_call_id": tool_call.id, "output": json.dumps(response)})
+                # print the responses
+                print("The response is: ",json.dumps(response))
 
       run = openai_client.beta.threads.runs.submit_tool_outputs(
-          thread_id=thread.id,
-          run_id=run.id,
-          tool_outputs=[
-              {
-              "tool_call_id": tool_call.id,
-              "output": json.dumps(responses),
-              }
-          ],
+            thread_id=thread.id,
+            run_id=run.id,
+            tool_outputs=tool_outputs,
       )
-      show_json(run)
 
+      show_json(run)
 
       run = wait_on_run(run, thread)
       print (run.status)
-
 
     pretty_print(get_messages(thread))
     bot_response = get_response(thread)
