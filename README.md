@@ -42,7 +42,7 @@ assistant = openai_client.beta.assistants.create(
 Contributions to the On-Call Assistant are welcome!
 
 ## License
-This project is licensed under the MIT License - see the `LICENSE.md` file for details.
+This project is licensed under the MIT License - see the `LICENSE` file for details.
 
 ## Acknowledgments
 - This project was inspired by and utilized concepts from the OpenAI Cookbook, specifically the "Assistants API Overview (Python)" article. [OpenAI Cookbook: Assistants API Overview](https://cookbook.openai.com/examples/assistants_api_overview_python)
