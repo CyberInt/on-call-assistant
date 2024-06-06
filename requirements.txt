@@ -1,0 +1,5 @@
+openai
+slack_sdk
+slack_bolt
+requests
+elasticsearch7
