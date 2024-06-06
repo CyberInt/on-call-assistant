@@ -279,8 +279,7 @@ def handle_message_events(body, logger):
     print (run.status)
 
     while run.required_action is not None:
-      # Extract single tool call
-      #tool_call = run.required_action.submit_tool_outputs.tool_calls[0]
+      # Extract tool call
       tool_calls = run.required_action.submit_tool_outputs.tool_calls
 
       print("Calling tools: ", len(tool_calls), tool_calls)
