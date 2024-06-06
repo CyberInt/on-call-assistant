@@ -34,7 +34,7 @@ To create the assistant as a one-time setup, run the following code snippet with
 assistant = openai_client.beta.assistants.create(
  name="OnCall assistant",
  instructions="You are an oncall assistant. You will fetch data from multiple sources and help an Ops engineer understand the current status of a production environment. Answers should be 1-2 sentences max.",
- model="gpt-4-1106-preview",
+ model="gpt-4o",
 )
 ```
 
